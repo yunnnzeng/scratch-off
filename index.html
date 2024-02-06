@@ -41,8 +41,14 @@
         function scratchOff(e) {
             if (!isDrawing) return;
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            let x, y;
+            if (e.touches) { // 触摸事件
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else { // 鼠标事件
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
             ctx.arc(x, y, 20, 0, Math.PI * 2);
@@ -62,6 +68,14 @@
         canvas.addEventListener('mousemove', scratchOff);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
+        
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            startDrawing(e.touches[0]);
+        });
+        canvas.addEventListener('touchmove', scratchOff);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchcancel', stopDrawing);
     </script>
 </body>
 </html>
