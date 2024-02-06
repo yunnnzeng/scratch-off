@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch Card Game</title>
+    <style>
+        #scratch-card {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        #scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="scratch-card">
+        <canvas id="scratch-canvas" width="300" height="200"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.src = 'scratch-off.jpg'; // The scratch-off image
+        img.onload = function() {
+            const scale = Math.max(canvas.width / img.width, canvas.height / img.height); // 计算缩放比例
+            const newWidth = img.width * scale;
+            const newHeight = img.height * scale;
+            ctx.drawImage(img, 0, 0, newWidth, newHeight); // 缩放并绘制涂层
+        };
+
+        let isDrawing = false;
+
+        function scratchOff(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            scratchOff(e);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', scratchOff);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+    </script>
+</body>
+</html>
