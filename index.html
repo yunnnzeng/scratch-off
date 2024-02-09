@@ -9,7 +9,7 @@
             position: relative;
             width: 300px;
             height: 200px;
-            background: url('background.jpg') no-repeat center center;
+            background: no-repeat center center;
             background-size: cover;
         }
         #scratch-canvas {
@@ -25,6 +25,22 @@
     </div>
 
     <script>
+        const scratchCard = document.getElementById('scratch-card');
+        let imgSrc;
+
+        // 生成 0 到 1 之间的随机数
+        const randomNumber = Math.random();
+
+        // 根据概率选择不同的底图
+        if (randomNumber < 0.1) {
+            imgSrc = 'background-o.jpg'; // 底图一的路径
+        } else {
+            imgSrc = 'background-x.jpg'; // 底图二的路径
+        }
+
+        scratchCard.style.backgroundImage = `url('${imgSrc}')`;
+
+
         const canvas = document.getElementById('scratch-canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
