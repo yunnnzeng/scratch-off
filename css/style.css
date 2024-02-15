@@ -1,0 +1,12 @@
+#scratch-card {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background: no-repeat center center;
+    background-size: cover;
+}
+#scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
